@@ -46,6 +46,12 @@ to quickly create a Cobra application.`,
 		GoBot.Handle(telebot.OnText, func(m telebot.Context) error {
 
 			log.Print(m.Message().Payload, m.Text())
+			payload := m.Message().Payload
+
+			switch payload {
+			case "hello":
+				err = m.Send(fmt.Sprintf("Yo, I'm GoBot %s!", appVersion))
+			}
 
 			return err
 
