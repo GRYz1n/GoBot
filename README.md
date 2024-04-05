@@ -1,1 +1,1 @@
-# GoBot
+# kbot

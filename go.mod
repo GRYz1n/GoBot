@@ -1,4 +1,4 @@
-module github.com/GRYz1n/GoBot
+module github.com/GRYz1n/kbot
 
 go 1.22.1
 
