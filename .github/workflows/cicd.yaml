@@ -1,17 +1,54 @@
-# Перша секція в файлі не обов'язкова та описує назву  Pipeline:
+#Name
 name: KBOT-CICD
 
-# Визначимо подію, яка запустить виконання workflow процесу.
+#Trigger
 on: push
-# блок задач який налаштовано на запуск завдання на новій ВМ з останньою версією ubuntu
+
+#Job
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-latest
-# перший крок задачі дозволить запускати на ранері репозиторій із скриптами для виконання дії. 
+    runs-on: ubuntu-22.04
+#Git checkout
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-# наступним кроком запустимо команду make test, зробимо коміт та подивимось як це працює
-      - name: Run test
-        run: make test
+        with:
+          fetch-depth: 0
+
+#Build & Push
+      - name: Login to GIT HUB
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+#          username: ${{ github.actor }}
+          username: ${{ vars.KBOT_USERNAME }}
+          password: ${{ secrets.KBOT_REGISTRY_TOKEN }}
+
+      - name: Build image
+        run: make image
+
+      - name: Push image
+        run: make push  
+
+  cd:
+    name: CD
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 
+
+    - run: echo "VERSION=$(git describe --tags --abbrev=0)-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+    - uses: mikefarah/yq@master
+      with:
+        cmd: yq -i '.image.tag=strenv(VERSION)' helm/values.yaml
+
+    - run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git commit -am "update version $VERSION"
+        git push
