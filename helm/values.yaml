@@ -5,7 +5,7 @@
 replicaCount: 1
 image:
   repository: gryz1n
-  tag: "v1.3.0-bce27ab"
+  tag: "v1.3.0-a0854f1"
   arch: "amd64"
 secret:
   name: "kbot"
