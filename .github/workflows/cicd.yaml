@@ -23,11 +23,12 @@ jobs:
           APP: "kbot"
         run: make image push
 
-      # - name: Docker Hub login
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: ${{ vars.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: GitHub login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: gryz1n
+          password: ${{ secrets.GHCR_TOKEN }}
 
       # - name: Build&Push
       #   env:
