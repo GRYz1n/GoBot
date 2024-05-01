@@ -15,6 +15,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: GitHub login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: gryz1n
+          password: ${{ secrets.GHCR_TOKEN }}
+
       - name: Run test
         run: make test
 
@@ -22,13 +29,6 @@ jobs:
         env:
           APP: "kbot"
         run: make image push
-
-      - name: GitHub login
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: gryz1n
-          password: ${{ secrets.GHCR_TOKEN }}
 
       # - name: Build&Push
       #   env:
