@@ -5,7 +5,7 @@
 replicaCount: 1
 image:
   repository: gryz1n
-  tag: "v1.1.0-b135f65"
+  tag: "v1.3.0-5fdc42f"
   arch: amd64
 
 secret:
