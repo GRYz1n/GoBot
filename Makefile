@@ -1,5 +1,5 @@
 APP=$(shell basename $(shell git remote get-url origin))
-REGISTRY=ghcr.io/gryz1n/
+REGISTRY=ghcr.io/gryz1n
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS=linux
 #possible OS: linux, darwin, windows
