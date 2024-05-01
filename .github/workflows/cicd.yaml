@@ -1,7 +1,9 @@
 name: KBOT-CICD
 
-on: push
-  
+on: 
+  push:
+    branches:
+      - develop
 jobs:
   ci:
     name: CI
@@ -16,19 +18,24 @@ jobs:
       - name: Run test
         run: make test
 
-      - name: Docker Hub login
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build&Push
         env:
           APP: "kbot"
-          REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-        run: make image push TARGETARCH=$TARGETARCH
-      - name: Clean
-        run: make clean TARGETARCH=$TARGETARCH
+        run: make image push
+
+      # - name: Docker Hub login
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ vars.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # - name: Build&Push
+      #   env:
+      #     APP: "kbot"
+      #     REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+      #   run: make image push TARGETARCH=$TARGETARCH
+      # - name: Clean
+      #   run: make clean TARGETARCH=$TARGETARCH
       
   cd:
     name: CD
@@ -44,6 +51,7 @@ jobs:
     - uses: mikefarah/yq@master
       with:
         cmd: yq -i '.image.tag=strenv(VERSION) | .image.arch=strenv(TARGETARCH)' helm/values.yaml
+    
     - run: |
         git config user.name github-actions
         git config user.email github-actions@github.com
