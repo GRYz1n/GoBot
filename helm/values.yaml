@@ -5,8 +5,8 @@
 replicaCount: 1
 image:
   repository: gryz1n
-  tag: "v1.3.0-bce27ab"
-  arch: "amd64"
+  tag: "v1.3.0-e4b2350"
+  arch: ""
 secret:
   name: "kbot"
   env: "TELE_TOKEN"
