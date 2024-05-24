@@ -2,7 +2,7 @@ APP=$(shell basename $(shell git remote get-url origin))
 REGISTRY=ghcr.io/gryz1n/
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS=linux
-#possible OS: linux, darwin, windows
+#possible OS: linux, darwin, windows, iOS
 TARGETARCH=amd64 #amd64 arm64 
 #possible ARCH: amd64, arm, 386
 
